@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context="com.neofect.headerscrollapp.MainActivity">
+
+	<android.support.design.widget.CoordinatorLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<com.neofect.headerscrollapp.HeaderView
+			android:id="@+id/headerview"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			app:layout_behavior="com.neofect.headerscrollapp.HeaderViewScrollBehavior">
+
+			<TextView
+				android:id="@+id/title"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:layout_centerHorizontal="true"
+				android:layout_marginTop="27dp"
+				android:text="RAPAEL ComCog"
+				android:textSize="20dp" />
+
+			<Button
+				android:id="@+id/back"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true"
+				android:layout_marginLeft="6dp"
+				android:text="환자 목록" />
+
+			<android.support.design.widget.TabLayout
+				android:id="@+id/tab"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/title"
+				android:layout_centerHorizontal="true">
+
+				<android.support.design.widget.TabItem
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="세션 훈련" />
+
+				<android.support.design.widget.TabItem
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="단일 훈련" />
+
+			</android.support.design.widget.TabLayout>
+
+		</com.neofect.headerscrollapp.HeaderView>
+
+		<android.support.v7.widget.RecyclerView
+			android:id="@+id/recycler"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			app:layoutManager="LinearLayoutManager"
+			app:layout_behavior="com.neofect.headerscrollapp.ContentScrollBehavior"
+			tools:listitem="@layout/item_recycler" />
+
+		<!--<android.support.v4.view.ViewPager-->
+		<!--android:id="@+id/viewpager"-->
+		<!--android:layout_width="match_parent"-->
+		<!--android:layout_height="0px"-->
+		<!--android:layout_weight="1"-->
+		<!--app:layout_behavior="@string/appbar_scrolling_view_behavior" />-->
+
+	</android.support.design.widget.CoordinatorLayout>
+
+	<EditText
+		android:id="@+id/edit_threshold"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:textSize="20dp" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_toLeftOf="@id/edit_threshold"
+		android:text="Threshold"
+		android:textSize="20dp" />
+
+	<EditText
+		android:id="@+id/edit_step"
+		android:layout_width="100dp"
+		android:layout_height="wrap_content"
+		android:layout_above="@id/edit_threshold"
+		android:layout_alignParentRight="true"
+		android:textSize="20dp" />
+
+	<TextView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@id/edit_step"
+		android:layout_toLeftOf="@id/edit_step"
+		android:text="Step"
+		android:textSize="20dp" />
+
+</RelativeLayout>
