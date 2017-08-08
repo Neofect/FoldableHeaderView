@@ -1,5 +1,20 @@
 apply plugin: 'com.android.library'
 
+if (!hasProperty('USE_LOCAL_FOLDABLE_HEADERVIEW')) {
+    apply plugin: 'com.novoda.bintray-release'
+
+    publish {
+        userOrg = 'rouddyneo'
+        groupId = 'com.neofect.library.ui.foldableheaderview'
+        artifactId = 'foldableheaderview'
+        publishVersion = '1.0.0'
+        desc = 'headerscrollapp'
+        website = 'https://github.com/rouddyNeo/headerscrollapp'
+        issueTracker = "${website}/issues"
+        repository = "${website}.git"
+    }
+}
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
