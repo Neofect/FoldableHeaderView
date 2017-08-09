@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler);
         recyclerView.setAdapter(new Adapter());
 
-		HeaderView headerView = (HeaderView) findViewById(R.id.headerview);
-		CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) headerView.getLayoutParams();
+		MainHeaderView mainHeaderView = (MainHeaderView) findViewById(R.id.headerview);
+		CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) mainHeaderView.getLayoutParams();
 		final HeaderViewScrollBehavior behavior = (HeaderViewScrollBehavior) params.getBehavior();
 
 		EditText editStep = (EditText) findViewById(R.id.edit_step);

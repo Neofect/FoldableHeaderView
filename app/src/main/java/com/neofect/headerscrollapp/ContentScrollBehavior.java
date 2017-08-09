@@ -24,7 +24,7 @@ public class ContentScrollBehavior extends ContentsScrollBehavior {
 	protected View findHeaderLayout(List<View> views) {
 		int i = 0;
 		for(View view : views) {
-			if (view instanceof HeaderView) {
+			if (view instanceof MainHeaderView) {
 				return view;
 			}
 		}
@@ -34,6 +34,6 @@ public class ContentScrollBehavior extends ContentsScrollBehavior {
 
 	@Override
 	protected boolean isViewDependsOn(View view) {
-		return view instanceof HeaderView;
+		return view instanceof MainHeaderView;
 	}
 }

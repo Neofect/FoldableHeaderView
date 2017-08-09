@@ -15,7 +15,7 @@ import android.view.animation.Interpolator;
  * Created by yoojaehong on 2017. 8. 8..
  */
 
-public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+public abstract class HeaderScrollBehavior<V extends HeaderView> extends CoordinatorLayout.Behavior<V> {
 
 	private final String LOG_TAG = HeaderScrollBehavior.class.getSimpleName();
 
@@ -24,10 +24,6 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 			switch(message.what) {
 				case 0:
 					setViewCurrent((V)message.obj, current);
-					return true;
-
-				case 1:
-					state = false;
 					return true;
 
 				default:
@@ -80,10 +76,10 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 		}
 	}
 
-	public void doFold(V view) {
+	void doFold(V view) {
 		synchronized(this) {
 			FoldRunnable foldRunnable = getRunnable(view);
-			if (!state) {
+			if (!state && current == 0f) {
 				state = true;
 				foldRunnable.step = step;
 				foldRunnable.increasing = true;
@@ -93,10 +89,10 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 		}
 	}
 
-	public void doUnfold(V view) {
+	void doUnfold(V view) {
 		synchronized(this) {
 			FoldRunnable foldRunnable = getRunnable(view);
-			if (!state) {
+			if (!state && current == 1f) {
 				state = true;
 				foldRunnable.step = step;
 				foldRunnable.increasing = false;
@@ -153,7 +149,12 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 					Log.e(LOG_TAG, "", e);
 				}
 			}
-			handler.sendMessageDelayed(handler.obtainMessage(1), 500);
+			handler.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					state = false;
+				}
+			}, 100);
 		}
 	}
 }
