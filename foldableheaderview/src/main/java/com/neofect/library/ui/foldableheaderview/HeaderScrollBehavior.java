@@ -8,6 +8,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
 
 /**
  * Created by yoojaehong on 2017. 8. 8..
@@ -34,12 +36,11 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 		}
 	});
 
-	private final float min = 0f;
-	private final float max = 1.0f;
-	private float current = min;
+	private float current = 0;
 	private float step = 0.05f;
 	private int threshoulder = 10;
 	private boolean state = false;
+	private Interpolator interpolator = new AccelerateDecelerateInterpolator();
 	private FoldRunnable foldRunnable;
 
 	public HeaderScrollBehavior() {
@@ -57,6 +58,14 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 		this.threshoulder = threshoulder;
 	}
 
+	public void setInterpolator(Interpolator interpolator) {
+		if (interpolator != null) {
+			this.interpolator = interpolator;
+		} else {
+			this.interpolator = new AccelerateDecelerateInterpolator();
+		}
+	}
+
 	@Override
 	public final boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, V child, View directTargetChild, View target, int nestedScrollAxes) {
 		return true;
@@ -71,26 +80,26 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 		}
 	}
 
-	private void doFold(V view) {
+	public void doFold(V view) {
 		synchronized(this) {
 			FoldRunnable foldRunnable = getRunnable(view);
 			if (!state) {
 				state = true;
-				foldRunnable.destination = max;
 				foldRunnable.step = step;
+				foldRunnable.increasing = true;
 				Thread thread = new Thread(foldRunnable);
 				thread.start();
 			}
 		}
 	}
 
-	private void doUnfold(V view) {
+	public void doUnfold(V view) {
 		synchronized(this) {
 			FoldRunnable foldRunnable = getRunnable(view);
 			if (!state) {
 				state = true;
-				foldRunnable.destination = min;
-				foldRunnable.step = -step;
+				foldRunnable.step = step;
+				foldRunnable.increasing = false;
 				Thread thread = new Thread(foldRunnable);
 				thread.start();
 			}
@@ -109,36 +118,32 @@ public abstract class HeaderScrollBehavior<V extends View> extends CoordinatorLa
 	private class FoldRunnable implements Runnable {
 
 		private final V view;
-		private float destination;
 		private float step;
+		private float progress;
+		private boolean increasing;
 
 		public FoldRunnable(V view) {
 			this.view = view;
 		}
 
 		private boolean isDone() {
-			if (step > 0) {
-				return current >= destination;
-			} else {
-				return current <= destination;
-			}
+			return progress >= 1.0;
 		}
 
 		private void processStep() {
-			current += step;
-			if (step > 0) {
-				if (current > destination) {
-					current = destination;
-				}
+			progress += step;
+			progress = progress>=1.0f ? 1.0f : progress;
+			float interpolated = interpolator.getInterpolation(progress);
+			if (increasing) {
+				current = interpolated;
 			} else {
-				if (current < destination) {
-					current = destination;
-				}
+				current = 1.0f - interpolated;
 			}
 		}
 
 		@Override
 		public void run() {
+			progress = 0f;
 			while (!isDone()) {
 				processStep();
 				handler.sendMessage(handler.obtainMessage(0, view));
