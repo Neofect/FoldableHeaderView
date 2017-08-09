@@ -7,7 +7,7 @@ if (!hasProperty('USE_LOCAL_FOLDABLE_HEADERVIEW')) {
         userOrg = 'rouddyneo'
         groupId = 'com.neofect.library.ui.foldableheaderview'
         artifactId = 'foldableheaderview'
-        publishVersion = '1.0.1'
+        publishVersion = '1.0.2'
         desc = 'headerscrollapp'
         website = 'https://github.com/rouddyNeo/headerscrollapp'
         issueTracker = "${website}/issues"
@@ -23,7 +23,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.2"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

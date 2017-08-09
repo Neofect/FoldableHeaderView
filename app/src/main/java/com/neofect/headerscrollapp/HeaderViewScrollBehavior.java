@@ -12,7 +12,7 @@ import com.neofect.library.ui.foldableheaderview.HeaderScrollBehavior;
  * Created by yoojaehong on 2017. 8. 7..
  */
 
-public class HeaderViewScrollBehavior extends HeaderScrollBehavior<HeaderView> {
+public class HeaderViewScrollBehavior extends HeaderScrollBehavior<MainHeaderView> {
 
 	private final String LOG_TAG = HeaderViewScrollBehavior.class.getSimpleName();
 
@@ -24,7 +24,7 @@ public class HeaderViewScrollBehavior extends HeaderScrollBehavior<HeaderView> {
 	}
 
 	@Override
-	protected void setViewCurrent(HeaderView view, float current) {
+	protected void setViewCurrent(MainHeaderView view, float current) {
 		TextView textView = (TextView) view.findViewById(R.id.title);
 		float alpha = 1.0f - current * 1.5f;
 		if (alpha < 0f) {
