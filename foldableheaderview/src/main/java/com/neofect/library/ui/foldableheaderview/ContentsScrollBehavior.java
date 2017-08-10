@@ -23,6 +23,26 @@ public abstract class ContentsScrollBehavior extends CoordinatorLayout.Behavior 
 	}
 
 	@Override
+	public boolean onMeasureChild(CoordinatorLayout parent, View child, int parentWidthMeasureSpec, int widthUsed, int parentHeightMeasureSpec, int heightUsed) {
+		if(child.getLayoutParams().height == ViewGroup.LayoutParams.MATCH_PARENT) {
+			List dependencies = parent.getDependencies(child);
+			if(dependencies.isEmpty()) {
+				return false;
+			}
+
+			View headerLayout = findHeaderLayout(dependencies);
+			if (headerLayout != null && ViewCompat.isLaidOut(headerLayout)) {
+				int height = parent.getHeight() - headerLayout.getMeasuredHeight();
+				int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.AT_MOST);
+				parent.onMeasureChild(child, parentWidthMeasureSpec, widthUsed, heightMeasureSpec, heightUsed);
+				return true;
+			}
+		}
+
+		return super.onMeasureChild(parent, child, parentWidthMeasureSpec, widthUsed, parentHeightMeasureSpec, heightUsed);
+	}
+
+	@Override
 	public final boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
 		if(child.getLayoutParams().height == ViewGroup.LayoutParams.MATCH_PARENT) {
 			List dependencies = parent.getDependencies(child);
@@ -33,7 +53,7 @@ public abstract class ContentsScrollBehavior extends CoordinatorLayout.Behavior 
 			View headerLayout = findHeaderLayout(dependencies);
 			if (headerLayout != null && ViewCompat.isLaidOut(headerLayout)) {
 				int height = parent.getHeight() - headerLayout.getMeasuredHeight();
-				child.layout(0, 0, parent.getWidth(), height);
+				child.layout(0, headerLayout.getMeasuredHeight(), parent.getWidth(), parent.getHeight());
 				return true;
 			}
 		}
@@ -45,7 +65,7 @@ public abstract class ContentsScrollBehavior extends CoordinatorLayout.Behavior 
 		CoordinatorLayout.Behavior behavior = ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior();
 		if (behavior instanceof HeaderScrollBehavior) {
 			int height = dependency.getHeight();
-			ViewCompat.setTranslationY(child, (float) height);
+			child.layout(0, dependency.getMeasuredHeight(), parent.getWidth(), parent.getHeight());
 		}
 
 		return false;
