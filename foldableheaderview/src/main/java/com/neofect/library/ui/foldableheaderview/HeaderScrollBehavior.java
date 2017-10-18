@@ -79,7 +79,7 @@ public abstract class HeaderScrollBehavior<V extends HeaderView> extends Coordin
 	void doFold(V view) {
 		synchronized(this) {
 			FoldRunnable foldRunnable = getRunnable(view);
-			if (!state && current == 0f) {
+			if (!state && current <= 0f) {
 				state = true;
 				foldRunnable.step = step;
 				foldRunnable.increasing = true;
@@ -92,7 +92,7 @@ public abstract class HeaderScrollBehavior<V extends HeaderView> extends Coordin
 	void doUnfold(V view) {
 		synchronized(this) {
 			FoldRunnable foldRunnable = getRunnable(view);
-			if (!state && current == 1f) {
+			if (!state && current >= 1f) {
 				state = true;
 				foldRunnable.step = step;
 				foldRunnable.increasing = false;
